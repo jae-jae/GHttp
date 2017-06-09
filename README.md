@@ -9,7 +9,7 @@ composer require jaeger/g-http
 
 ## 用法
 
-1. get
+#### 1. get
 ```php
 
 use Jaeger\GHttp;
@@ -36,7 +36,7 @@ $rt = GHttp::get('https://www.baidu.com/s',[
 
 ```
 
-2.post
+#### 2.post
 ```
 $rt = GHttp::post('https://www.posttestserver.com/post.php',[
     'name' => 'QueryList',
@@ -44,7 +44,7 @@ $rt = GHttp::post('https://www.posttestserver.com/post.php',[
 ]);
 
 ```
-3.download
+#### 3.download
 
 ```
 GHttp::download('http://sw.bos.baidu.com/setup.exe','./path/to/xx.exe');

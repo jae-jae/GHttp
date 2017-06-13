@@ -9,7 +9,7 @@ composer require jaeger/g-http
 
 ## 用法
 
-#### 1. get
+#### 1. get / getJson
 ```php
 
 use Jaeger\GHttp;
@@ -33,6 +33,8 @@ $rt = GHttp::get('https://www.baidu.com/s',[
         'Cookie' => 'cookie xxx'
     ]
 ]);
+
+$rt = GHttp::getJson('https://xxxx.com/json');
 
 ```
 

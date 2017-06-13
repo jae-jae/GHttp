@@ -44,6 +44,12 @@ class GHttp
         return (string)$response->getBody();
     }
 
+    public static function getJson($url, $args = null, $otherArgs = [])
+    {
+        $data = self::get($url, $args , $otherArgs);
+        return json_decode($data,JSON_UNESCAPED_UNICODE);
+    }
+
     /**
      * @param $url
      * @param array $args

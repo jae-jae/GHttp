@@ -32,6 +32,7 @@ class GHttp
      */
     public static function get($url,$args = null,$otherArgs = [])
     {
+        is_string($args) && parse_str($args,$args);
         $args = array_merge([
             'query' => $args,
             'headers' => [
@@ -58,6 +59,7 @@ class GHttp
      */
     public static function post($url,$args = null,$otherArgs = [])
     {
+        is_string($args) && parse_str($args,$args);
         $args = array_merge([
             'form_params' => $args,
             'headers' => [

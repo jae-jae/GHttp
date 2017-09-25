@@ -16,10 +16,13 @@ use Jaeger\GHttp;
 
 $rt = GHttp::get('https://www.baidu.com/s?wd=QueryList');
 
+$rt = GHttp::get('https://www.baidu.com/s','wd=QueryList&wd2=teststr');
+
 //or
 
 $rt = GHttp::get('https://www.baidu.com/s',[
-    'wd' => 'QueryList'
+    'wd' => 'QueryList',
+    'wd2' => 'teststr'
 ]);
 
 //opt
@@ -44,6 +47,8 @@ $rt = GHttp::post('https://www.posttestserver.com/post.php',[
     'name' => 'QueryList',
     'password' => 'ql'
 ]);
+
+$rt = GHttp::post('https://www.posttestserver.com/post.php','name=QueryList&password=ql');
 
 ```
 #### 3.download

@@ -41,7 +41,7 @@ $rt = GHttp::getJson('https://xxxx.com/json');
 
 ```
 
-#### 2.post
+#### 2.post / postRaw / postJson
 ```
 $rt = GHttp::post('https://www.posttestserver.com/post.php',[
     'name' => 'QueryList',
@@ -49,6 +49,14 @@ $rt = GHttp::post('https://www.posttestserver.com/post.php',[
 ]);
 
 $rt = GHttp::post('https://www.posttestserver.com/post.php','name=QueryList&password=ql');
+
+
+$rt = GHttp::postRaw('http://httpbin.org/post','raw data');
+$rt = GHttp::postRaw('http://httpbin.org/post',['aa' => 11,'bb' => 22]);
+
+
+$rt = GHttp::postJson('http://httpbin.org/post',['aa' => 11,'bb' => 22]);
+$rt = GHttp::postJson('http://httpbin.org/post','aa=11&bb=22');
 
 ```
 #### 3.download

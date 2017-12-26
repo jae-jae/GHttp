@@ -34,6 +34,7 @@ class GHttp
     {
         is_string($args) && parse_str($args,$args);
         $args = array_merge([
+            'verify' => false,
             'query' => $args,
             'headers' => [
                 'referer' => $url,
@@ -61,6 +62,7 @@ class GHttp
     {
         is_string($args) && parse_str($args,$args);
         $args = array_merge([
+            'verify' => false,
             'form_params' => $args,
             'headers' => [
                 'referer' => $url,
@@ -82,6 +84,7 @@ class GHttp
     {
         is_array($raw) && $raw = json_encode($raw);
         $args = array_merge([
+            'verify' => false,
             'body' => $raw,
             'headers' => [
                 'referer' => $url,
@@ -103,6 +106,7 @@ class GHttp
     {
         is_string($args) && parse_str($args,$args);
         $args = array_merge([
+            'verify' => false,
             'json' => $args,
             'headers' => [
                 'referer' => $url,

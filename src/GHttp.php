@@ -11,6 +11,9 @@
 namespace Jaeger;
 
 use GuzzleHttp\Client;
+use GuzzleHttp\Pool;
+use GuzzleHttp\Psr7\Request;
+use Closure;
 
 class GHttp
 {
@@ -131,5 +134,60 @@ class GHttp
             'sink' => $filePath,
         ]);
         return self::get($url,$args,$otherArgs);
+    }
+
+    /**
+     * @param $urls
+     * @return MultiRequest
+     */
+    public static function multiRequest($urls)
+    {
+//        is_string($args) && parse_str($args,$args);
+//        $args = array_merge([
+//            'verify' => false,
+//            'query' => $args,
+//            'headers' => [
+//                'referer' => $url,
+//                'User-Agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36'
+//            ]
+//        ],$otherArgs);
+        $client = self::getClient();
+//        $response = $client->request('GET', $url,$args);
+//        return (string)$response->getBody();
+/*        $response = $client->request('POST','http://httpbin.org/post', [
+            'form_params' => [
+                'field_name' => 'abc',
+                'other_field' => '123',
+                'nested_field' => [
+                    'nested' => 'hello'
+                ]
+            ]
+        ]);
+        print_r((string)$response->getBody());die();*/
+
+
+/*        $requests = function ($urls) use($client){
+            foreach ($urls as $url) {
+//                yield new Request('GET', $url);
+                yield new Request('POST',$url,[
+                    'Content-Type' => 'application/x-www-form-urlencoded',
+                    'User-Agent' => 'hjhj'
+                ],http_build_query([
+                    'xxx' => 'aaa',
+                    'ccc' => 'sss'
+                ], '', '&'));
+            }
+        };
+
+        $pool = new Pool($client, $requests($urls), [
+            'concurrency' => 2,
+            'fulfilled' => $success,
+            'rejected' => $error,
+        ]);
+
+        $promise = $pool->promise();
+        $promise->wait();*/
+
+        return MultiRequest::newRequest($client)->urls($urls);
     }
 }

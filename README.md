@@ -117,3 +117,42 @@ GHttp::multiRequest($requests)->success(function($response,$index){
     print_r($index);
 })->post();
 ```
+### 5. Request with cache
+
+Base on PHP-Cache: http://www.php-cache.com
+
+- Use filesystem cache
+```php
+use Jaeger\GHttp;
+
+$rt = GHttp::get('http://httpbin.org/get',[
+    'wd' => 'QueryList'
+],[
+    'cache' => __DIR__,
+    'cache_ttl' => 120 //seconds
+]);
+
+```
+
+- Use predis cache
+
+Install predis adapter:
+```
+composer require cache/predis-adapter
+```
+
+Usage:
+```php
+use Jaeger\GHttp;
+use Cache\Adapter\Predis\PredisCachePool;
+
+$client = new \Predis\Client('tcp:/127.0.0.1:6379');
+$pool = new PredisCachePool($client);
+
+$rt = GHttp::get('http://httpbin.org/get',[
+    'wd' => 'QueryList'
+],[
+    'cache' => $pool,
+    'cache_ttl' => 120 //seconds
+]);
+```

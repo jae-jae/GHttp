@@ -9,8 +9,8 @@
         }
     ],
     "require": {
-        "guzzlehttp/guzzle": "^6.2",
-        "cache/filesystem-adapter": "^1.0"
+        "cache/filesystem-adapter": "^1.0",
+        "guzzlehttp/guzzle": "^7.1"
     },
     "autoload":{
         "psr-4":{

@@ -9,10 +9,9 @@
 namespace Jaeger;
 
 
-use Cache\Adapter\Common\AbstractCachePool;
-use Cache\Adapter\Filesystem\FilesystemCachePool;
-use League\Flysystem\Adapter\Local;
-use League\Flysystem\Filesystem;
+use Symfony\Component\Cache\Adapter\FilesystemAdapter;
+use Symfony\Contracts\Cache\CacheInterface;
+use Symfony\Contracts\Cache\ItemInterface;
 
 class Cache extends GHttp
 {
@@ -25,21 +24,31 @@ class Cache extends GHttp
             return self::$name(...$arguments);
         }
         if (is_string($cacheConfig['cache'])) {
-            $filesystemAdapter = new Local($cacheConfig['cache']);
-            $filesystem        = new Filesystem($filesystemAdapter);
-            $cachePool = new FilesystemCachePool($filesystem);
-        }else if ($cacheConfig['cache'] instanceof AbstractCachePool) {
+            $cachePool = new FilesystemAdapter(
+
+                // a string used as the subdirectory of the root cache directory, where cache
+                // items will be stored
+                $namespace = '',
+            
+                // the default lifetime (in seconds) for cache items that do not define their
+                // own lifetime, with a value 0 causing items to be stored indefinitely (i.e.
+                // until the files are deleted)
+                $defaultLifetime = 0,
+            
+                // the main cache directory (the application needs read-write permissions on it)
+                // if none is specified, a directory is created inside the system temporary directory
+                $directory = $cacheConfig['cache']
+            );
+        }else if ($cacheConfig['cache'] instanceof CacheInterface) {
             $cachePool = $cacheConfig['cache'];
         }
 
         $cacheKey = self::getCacheKey($name,$arguments);
-        $data = $cachePool->get($cacheKey);
-        if(empty($data)) {
-            $data = self::$name(...$arguments);
-            if(!empty($data)) {
-                $cachePool->set($cacheKey,$data,$cacheConfig['cache_ttl']);
-            }
-        }
+        $self = self::class;
+        $data = $cachePool->get($cacheKey, function (ItemInterface $item) use($self, $name, $arguments, $cacheConfig): string {
+            $item->expiresAfter($cacheConfig['cache_ttl']);
+            return $self::$name(...$arguments);
+        });
         return $data;
     }
 

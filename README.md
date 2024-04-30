@@ -119,7 +119,7 @@ GHttp::multiRequest($requests)->success(function($response,$index){
 ```
 ### 5. Request with cache
 
-Base on PHP-Cache: http://www.php-cache.com
+Base on Symfony-Cache: https://symfony.com/doc/current/components/cache.html
 
 - Use filesystem cache
 ```php
@@ -136,23 +136,38 @@ $rt = GHttp::get('http://httpbin.org/get',[
 
 - Use predis cache
 
-Install predis adapter:
+Install predis:
 ```
-composer require cache/predis-adapter
+composer require predis/predis
 ```
 
 Usage:
 ```php
 use Jaeger\GHttp;
-use Cache\Adapter\Predis\PredisCachePool;
+use Symfony\Component\Cache\Adapter\RedisAdapter;
 
-$client = new \Predis\Client('tcp:/127.0.0.1:6379');
-$pool = new PredisCachePool($client);
+$cache = new RedisAdapter(
+
+    // the object that stores a valid connection to your Redis system
+    $redis = RedisAdapter::createConnection(
+        'redis://localhost'
+    ),
+
+    // the string prefixed to the keys of the items stored in this cache
+    $namespace = 'cache',
+
+    // the default lifetime (in seconds) for cache items that do not define their
+    // own lifetime, with a value 0 causing items to be stored indefinitely (i.e.
+    // until RedisAdapter::clear() is invoked or the server(s) are purged)
+    $defaultLifetime = 0
+);
 
 $rt = GHttp::get('http://httpbin.org/get',[
     'wd' => 'QueryList'
 ],[
-    'cache' => $pool,
-    'cache_ttl' => 120 //seconds
+    'cache' => $cache,
+    'cache_ttl' => 120
 ]);
+
+print_r($rt);
 ```

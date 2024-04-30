@@ -119,7 +119,7 @@ GHttp::multiRequest($requests)->success(function($response,$index){
 ```
 ### 5. Request with cache
 
-Base on PHP-Cache: http://www.php-cache.com
+Base on Symfony-Cache: https://symfony.com/doc/current/components/cache.html
 
 - Use filesystem cache
 ```php
